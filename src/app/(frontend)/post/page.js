@@ -31,14 +31,14 @@ const HomePage = ({
   const [user, setUser] = useState({});
   const [showPhoto, setShowPhoto] = useState(false);
   const [pix, setPix] = useState(null);
-
+  console.log(posts);
   const router = useRouter();
 
   const handleLogout = async () => {
     const email = user.email;
     const resp = await logoutReq(email);
 
-    if (resp.status === 201) {
+    if (resp.status === 204) {
       Cookies.remove("jwt");
       router.push("/auth");
     }

@@ -22,8 +22,8 @@ export default function Home() {
   const [userPhotos, setUserPhotos] = useState([]);
   const [showFile, setShowFile] = useState(false);
   const [image, setImage] = useState("img__header");
-  const [auth, setAuth] = useState(Cookies.get("jwt"));
-
+  const [auth, setAuth] = useState(localStorage.getItem("jwt"));
+  console.log(Cookies.get("jwt"));
   const router = useRouter();
 
   const handleShowFile = () => {
@@ -111,11 +111,19 @@ export default function Home() {
       handleGetPhotos();
     }
   }, [user, show]);
-
+  ///////////////////////////////
+  useEffect(() => {
+    if (auth) {
+      const jwt = Cookies.get("jwt");
+      console.log(jwt);
+    }
+  }, [auth]);
+  /////////////////////////////////
   const handleUsers = useCallback(async () => {
     try {
       const email = localStorage.getItem("email");
       const resp = await usersReq(email);
+      console.log("user", resp);
       setUser(resp);
     } catch (err) {
       const message = `User handleUsers-Unauthorized! ${err.message}`;
@@ -131,9 +139,11 @@ export default function Home() {
       handleUsers();
     }
     if (auth) {
+      console.log(auth);
       setShow(true);
     } else {
       setShow(false);
+      console.log("auth is false");
     }
   }, [auth, handleUsers]);
 

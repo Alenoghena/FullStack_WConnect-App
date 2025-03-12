@@ -1,5 +1,4 @@
 "use server";
-import Cookies from "js-cookie";
 import { postData } from "@/lib";
 
 export async function loginUser(formData: FormData) {

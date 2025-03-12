@@ -6,7 +6,7 @@ import nextConfig from "../next.config.mjs";
 const allowedOrigins =
   process.env.NODE_ENV === "production"
     ? ["https://www.yoursite.com", "https://yoursite.com"]
-    : ["http://localhost:3000"];
+    : ["http://localhost:3000", "http://localhost:3001"];
 
 const { secret } = nextConfig.serverRuntimeConfig;
 

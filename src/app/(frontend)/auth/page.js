@@ -45,9 +45,8 @@ function Auth() {
               expires: 7,
               secure: true,
             });
-
+            localStorage.setItem("jwt", resp.accessToken);
             storeEmail(resp.email);
-
             router.push("/");
           }
         }}
