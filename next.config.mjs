@@ -31,7 +31,7 @@ const nextConfig = {
     apiUrl:
       process.env.NODE_ENV === "development"
         ? "http://localhost:3000/api" // development api
-        : `${process.env.DB_PROD_HOST}/api`, // production api
+        : `${process.env.SERVER_URL}/api`, // production api
   },
   experimental: {
     serverActions: {
