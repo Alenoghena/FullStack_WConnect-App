@@ -8,6 +8,9 @@ const API_BASE_URL = "http://localhost:3000/api";
 
 const allowedOrigins = [
   "http://localhost:3000",
+  "http://localhost:3001",
+  "http://localhost:3002",
+  "http://localhost:3306",
   "https://www.yoursite.com",
   "http://127.0.0.1:5500",
 ];
@@ -26,6 +29,7 @@ const corsOptions = {
   optionsSuccessStatus: 200,
   methods: ["GET", "POST", "PATCH", "DELETE"],
   credentials: "include",
+  withCredentials: true,
   headers: {
     // Accept: "application/json",
     "Content-Type": "application/json",
@@ -37,7 +41,7 @@ export const client = axios.create(
   {
     baseURL: API_BASE_URL,
     timeout: 10000,
-    withCredentials: false, //This allowed connection to server
+    withCredentials: true, //This allowed connection to server
     responseType: "json",
   },
   cors(corsOptions)

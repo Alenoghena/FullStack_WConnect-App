@@ -2,7 +2,7 @@
 import Cookies from "js-cookie";
 import { postData, getData } from "@/lib";
 
-export async function createComment(
+export async function createComments(
   formData: FormData,
   postId: number,
   username: string

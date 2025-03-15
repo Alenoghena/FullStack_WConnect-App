@@ -2,16 +2,16 @@
 import React from "react";
 import Form from "next/form";
 import { MdSend } from "react-icons/md";
-import { createComment } from "@/actions/createComment";
+import { createComments } from "@/actions/createComments";
 
 const CreateComment = ({ user, postId, setComments }) => {
-  const { username } = user;
+  const username = user?.username;
 
   return (
     <div className="flex justify-center items-center gap-14 mx-auto mt-8">
       <Form
         action={async (formData) => {
-          const resp = await createComment(formData, postId, username);
+          const resp = await createComments(formData, postId, username);
           setComments(resp);
         }}
         className="flex justify-center items-center gap-2 mx-auto fixed bottom-4"

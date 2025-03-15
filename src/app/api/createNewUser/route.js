@@ -10,7 +10,7 @@ export async function POST(req) {
   //   return NextResponse.json("No connection");
   // }
   const { username, email, password } = await req.json();
-  console.log("one:", username, email, password);
+
   if (!username || !email || !password) {
     return new NextResponse(
       JSON.stringify({ message: "username, email and password are required" }),
@@ -18,10 +18,8 @@ export async function POST(req) {
     );
   }
 
-  console.log("two-three.......:");
   //check for duplicate names in db
   const duplicate = await User.findOne({ where: { username, email } });
-  console.log("two:", duplicate);
 
   if (duplicate)
     return NextResponse.json({
@@ -36,10 +34,7 @@ export async function POST(req) {
       refreshToken: '"b868072b70a7616b05a"',
     };
 
-    console.log("three:", newUser);
     const createUser = await User.create(newUser);
-
-    console.log("four:", newUser, createUser);
 
     // return res.status(201).json(newUser);
     return NextResponse.json({

@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 
 import Form from "next/form";
@@ -5,7 +6,8 @@ import { MdSend } from "react-icons/md";
 import { createPost } from "@/actions/createPost";
 
 const CreatePosts = ({ user, setPosts }) => {
-  const { id, username } = user;
+  const id = user?.id;
+  const username = user?.username;
 
   return (
     <div className="flex justify-center items-center gap-14 mx-auto mt-8">

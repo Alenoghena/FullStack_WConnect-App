@@ -1,4 +1,5 @@
 "use server";
+
 import { postData } from "@/lib";
 
 export async function loginUser(formData: FormData) {
@@ -8,8 +9,6 @@ export async function loginUser(formData: FormData) {
   };
 
   const resp = await postData("controller/auth", loginUser);
-
-  // localStorage.setItem("jwt", resp.accessToken);
 
   return resp;
 }

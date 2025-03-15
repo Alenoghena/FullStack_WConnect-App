@@ -14,13 +14,11 @@ const API_PHOTO_URL = "http://localhost:3000/images/";
 const HomePage = ({
   isShowCreatePost,
   userPhotoLink,
-  // userPhoto,
   image,
   handleCreatePost,
   handleCreateComment,
   handleHomeNav,
   handleDelete,
-
   show,
   deletepath,
   isShowDelete,
@@ -31,15 +29,16 @@ const HomePage = ({
   const [user, setUser] = useState({});
   const [showPhoto, setShowPhoto] = useState(false);
   const [pix, setPix] = useState(null);
-  console.log(posts);
+
   const router = useRouter();
 
   const handleLogout = async () => {
-    const email = user.email;
+    const email = user?.email;
     const resp = await logoutReq(email);
 
-    if (resp.status === 204) {
+    if (resp.status === 204 || resp.status === 201) {
       Cookies.remove("jwt");
+
       router.push("/auth");
     }
   };
@@ -52,7 +51,6 @@ const HomePage = ({
   function handleCommentsNav(id, postUserId) {
     setpostUserId(postUserId);
     router.push(`/post/${id}`);
-    // router.push("/post");
   }
   function handleNewsFeedNav() {
     router.push("/newsFeed");
@@ -79,7 +77,6 @@ const HomePage = ({
       setUser(resp);
     } catch (err) {
       const message = `User handleUsers-Unauthorized! ${err.message}`;
-      // setErrMsgUser(message);
     }
   }, [setUser]);
 
@@ -106,7 +103,6 @@ const HomePage = ({
     }
   }, [handlePosts, user]);
 
-  console.log(show);
   return (
     <div className="flex flex-col justify-center items-center gap-4">
       <Header
@@ -186,25 +182,3 @@ const HomePage = ({
 };
 
 export default HomePage;
-
-///////////////////////////////////////
-{
-  /* {isShowComment && (
-              <PostPage ///consider this later!
-                postUserId={postUserId}
-                image={image}
-                user={user}
-                handleLogout={handleLogout}
-                handleCreateComment={handleCreateComment}
-                isShowComment={isShowComment}
-                isShowCreateComment={isShowCreateComment}
-                setDeletePath={setDeletePath}
-                isShowDelete={isShowDelete}
-                setIsShowDelete={setIsShowDelete}
-                deleteMsg={deleteMsg}
-                handleShowFile={handleShowFile}
-                userPhotoLink={userPhotoLink}
-                userPhoto={userPhoto}
-              />
-            )} */
-}

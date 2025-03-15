@@ -4,7 +4,6 @@ import Cookies from "js-cookie";
 const options = {
   headers: {
     authorization: `Bearer ${Cookies.get("jwt")}`,
-    // email: localStorage.getItem("email"),
   },
 };
 
@@ -36,7 +35,9 @@ export const usersReq = async (email) => {
         email,
       },
     };
+
     const resp = await getData("controller/users/getUser", options);
+
     return resp;
   } catch (err) {
     const message = `User handleUsers-Unauthorized! ${err.message}`;

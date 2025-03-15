@@ -7,15 +7,6 @@ export async function createPost(
   userId: number,
   username: string
 ) {
-  // const options = {
-  //   headers: {
-  //     authorization: `Bearer ${Cookies.get("jwt")}`,
-  //     email: localStorage.getItem("email"),
-  //   },
-  // };
-
-  // const user = await getData("controller/users/getUser", options);
-
   const option = {
     title: formData.get("title"),
     postText: formData.get("postText"),

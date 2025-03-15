@@ -15,7 +15,7 @@ export async function POST(req) {
   }
 
   const buffer = Buffer.from(await photo.arrayBuffer());
-  const filename = Date.now() + photo.name.replaceAll(" ", "_");
+  const filename = photo.name.replaceAll(" ", "_");
 
   if (!userId) {
     return new NextResponse(

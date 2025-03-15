@@ -1,14 +1,17 @@
 import User from "@/models/User";
-import { NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
 import { comparingPwd } from "@/lib/pwd";
 import Cookies from "js-cookie";
+import { cookies } from "next/headers";
+import { setCookie } from "cookies-next/server";
+import { NextResponse } from "next/server";
 import nextConfig from "../../../../../next.config.mjs";
+
+//exported function to routes/auth.js
 
 export async function POST(req) {
   const { email, password } = await req.json();
-  console.log(email);
-  console.log("this is up..........here?", password, email);
+  const cookieStore = await cookies();
   if (!email || !password) {
     return NextResponse.json({
       message: "username, email and password are required",
@@ -18,7 +21,7 @@ export async function POST(req) {
   const foundUser = await User.findOne({
     where: { email },
   });
-  console.log("user is different?", foundUser);
+
   if (!foundUser) {
     return new NextResponse(JSON.stringify({ message: "user not found" }), {
       status: 401,
@@ -61,25 +64,32 @@ export async function POST(req) {
     //Saving refreshToken for currentUser
     foundUser.refreshToken = refreshToken.split(".")[0];
     await foundUser.save();
-    console.log(accessToken);
+    console.log("refreshToken......", refreshToken.split(".")[0]);
+
     //send cookie as response
     Cookies.set("jwt", refreshToken, {
-      httpOnly: true,
+      // httpOnly: true,
+      sameSite: true,
       secure: true,
-      maxAge: 24 * 60 * 60 * 1000,
+      maxAge: 60 * 60 * 1000,
     }); //{httpOnly: true, maxAge: 24 * 60 * 60 * 1000,sameSite:"None", secure:true}. secure:true for https only
-    // const user = { username: foundUser.username, email: foundUser.email };
+
+    cookieStore.set("jwt", refreshToken, {
+      // httpOnly: true,
+      sameSite: true,
+      secure: true,
+      maxAge: 60 * 60 * 1000,
+      path: "",
+    });
     //send accessToken in json form as response
+
     return NextResponse.json({
       accessToken,
-      email: foundUser.email,
       username: foundUser.username,
+      email: foundUser.email,
     });
   } else
     return new NextResponse(JSON.stringify({ message: "user not found" }), {
       status: 401,
     }); //Unauthorized
 }
-
-//exported to routes/auth.js
-// module.exports = { handleLogin };

@@ -1,5 +1,4 @@
 "use server";
-import Cookies from "js-cookie";
 import { postData } from "@/lib";
 
 export async function createUser(formData: FormData) {
@@ -11,12 +10,5 @@ export async function createUser(formData: FormData) {
 
   const resp = await postData("createNewUser", newUser);
 
-  // localStorage.setItem("jwt", user.accessToken);
-
-  //   Cookies.set("jwt", user.accessToken, {
-  //     expires: 7,
-  //     secure: true,
-  //   });
-  //   localStorage.setItem("email", newUser.email);
   return resp;
 }

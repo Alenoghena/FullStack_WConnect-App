@@ -4,8 +4,9 @@ import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import HomePage from "./(frontend)/post/page";
 import { photoReq, photosReq, usersReq } from "@/lib/reqAPI/apiRequests";
-import Auth from "./(frontend)/auth/page";
+import Autheticate from "./(frontend)/auth/page";
 import Cookies from "js-cookie";
+// import { deleteCookie, getCookie } from "cookies-next/client";
 import Link from "next/link.js";
 
 export default function Home() {
@@ -22,8 +23,9 @@ export default function Home() {
   const [userPhotos, setUserPhotos] = useState([]);
   const [showFile, setShowFile] = useState(false);
   const [image, setImage] = useState("img__header");
-  const [auth, setAuth] = useState(localStorage.getItem("jwt"));
-  console.log(Cookies.get("jwt"));
+  const [auth, setAuth] = useState(Cookies.get("jwt"));
+  // console.log(auth);
+  // console.log(getCookie("jwt"));
   const router = useRouter();
 
   const handleShowFile = () => {
@@ -88,7 +90,6 @@ export default function Home() {
       setUserPhoto(resp);
     } catch (err) {
       const message = `Post profile picture-Unauthorized! ${err.message}`;
-      console.log(message);
     }
   };
 
@@ -100,7 +101,6 @@ export default function Home() {
       setUserPhotos(resp);
     } catch (err) {
       const message = `Post profile picture-Unauthorized! ${err.message}`;
-      console.log(message);
     }
   };
 
@@ -111,25 +111,21 @@ export default function Home() {
       handleGetPhotos();
     }
   }, [user, show]);
-  ///////////////////////////////
-  useEffect(() => {
-    if (auth) {
-      const jwt = Cookies.get("jwt");
-      console.log(jwt);
-    }
-  }, [auth]);
-  /////////////////////////////////
+
   const handleUsers = useCallback(async () => {
     try {
-      const email = localStorage.getItem("email");
-      const resp = await usersReq(email);
-      console.log("user", resp);
-      setUser(resp);
+      if (auth !== null) {
+        const email = localStorage.getItem("email");
+
+        const resp = await usersReq(email);
+
+        setUser(resp);
+      }
     } catch (err) {
       const message = `User handleUsers-Unauthorized! ${err.message}`;
       // setErrMsgUser(message);
     }
-  }, [setUser]);
+  }, [setUser, auth]);
 
   useEffect(() => {
     setIsShowHome(true);
@@ -139,11 +135,9 @@ export default function Home() {
       handleUsers();
     }
     if (auth) {
-      console.log(auth);
       setShow(true);
     } else {
       setShow(false);
-      console.log("auth is false");
     }
   }, [auth, handleUsers]);
 
@@ -155,7 +149,7 @@ export default function Home() {
       <main className="flex flex-col gap-8 items-start w-full md:items-center">
         {!show && (
           <Link href={"/auth"}>
-            <Auth setAuth={setAuth} />
+            <Autheticate setAuth={setAuth} />
           </Link>
         )}
         {show && (
@@ -185,61 +179,4 @@ export default function Home() {
       </main>
     </div>
   );
-}
-
-//grid grid-rows-[20px_1fr_20px] items-start justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]
-// const handleFileChange = (e) => {
-//   if (e.target.files) {
-//     setStatus({ message: "initial" });
-//     setFile(e.target.files[0]);
-//   }
-// };
-// const handleUpload = async (file) => {
-//   if (file) {
-//     setStatus({ message: "uploading" });
-//     const formData = new FormData();
-//     formData.append("file", file);
-//     const userId = user.id;
-//     try {
-//       if (!userPhotoLink(userId)) {
-//         const result = await photoPost(formData, userId);
-//         setStatus(result);
-//         router.push("/");
-//       } else {
-//         const result = await photoPut(formData, userId);
-
-//         setStatus(result);
-//         router.push("/");
-//       }
-//     } catch (error) {
-//       console.error(error);
-//       setStatus(error);
-//     }
-//   }
-// };
-// const handleDelete = async (path) => {
-//   if (path.path.includes("deleteComment")) {
-//     const deleteResp = await deleteReq(path);
-
-//     setDeleteMsg(deleteResp);
-//   } else {
-//     const deleteResp = await deleteReq(path);
-//     setDeleteMsg(deleteResp);
-//     router.push("/");
-//   }
-// };
-
-{
-  /* {showFile && (
-                <ProfilePicture
-                  userId={user.id}
-                  userPhoto={userPhoto}
-                  setUserPhoto={setUserPhoto}
-                  file={file}
-                  status={status}
-                  handleFileChange={handleFileChange}
-                  handleUpload={handleUpload}
-                  showFile={showFile}
-                />
-              )} */
 }

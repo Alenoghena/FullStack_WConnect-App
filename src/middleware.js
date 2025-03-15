@@ -27,6 +27,16 @@ export async function middleware(req, res) {
     });
   }
 
+  //   res.headers.append('Access-Control-Allow-Origin', origin);
+
+  // // add the remaining CORS headers to the response
+  // res.headers.append('Access-Control-Allow-Credentials', "true");
+  // res.headers.append('Access-Control-Allow-Methods', 'GET,DELETE,PATCH,POST,PUT');
+  // res.headers.append(
+  //     'Access-Control-Allow-Headers',
+  //     'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
+  // );
+
   const authHeader =
     req.headers.get("Authorization")?.split(" ") ||
     req.headers.get("authorization")?.split(" ");
@@ -45,7 +55,7 @@ export async function middleware(req, res) {
     secret,
     algorithms: ["HS256"],
     //just added=>watch out for this session always
-    credentialsRequired: false,
+    credentialsRequired: true,
     getToken: function fromHeaderOrQuerystring(req) {
       if (
         req.headers.authorization &&

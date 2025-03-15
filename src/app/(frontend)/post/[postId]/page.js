@@ -50,11 +50,12 @@ const PostPage = ({ userPhotoLink }) => {
   const router = useRouter();
 
   const handleLogout = async () => {
-    const email = user.email;
+    const email = user?.email;
     const resp = await logoutReq(email);
 
-    if (resp.status === 201) {
+    if (resp.status === 201 || resp.status === 204) {
       Cookies.remove("jwt");
+
       router.push("/auth");
     }
   };
@@ -74,7 +75,6 @@ const PostPage = ({ userPhotoLink }) => {
         postId
       );
       setDeleteMsg(deleteResp);
-      // router.push(`/post/${postId}`);
     }
   };
 
@@ -297,7 +297,7 @@ const PostPage = ({ userPhotoLink }) => {
 
       {comments.map((comment) => {
         const commentId = comment.id;
-        // const name = comment.username;
+
         return (
           <div
             key={comment.id}

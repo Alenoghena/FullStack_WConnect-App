@@ -1,13 +1,13 @@
 "use client";
 import React, { useState } from "react";
-import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import AuthHeader from "@/components/AuthHeader";
 import { loginUser } from "@/actions/loginUser";
 import { createUser } from "@/actions/createUser";
 import Form from "next/form";
+import Cookies from "js-cookie";
 
-function Auth() {
+const Autheticate = () => {
   const [isNewUser, setIsNewUser] = useState(false);
   const [authButtonText, setAuthButtonText] = useState("Login");
   const [createStatus, setCreateStatus] = useState("");
@@ -27,7 +27,6 @@ function Auth() {
     }
   };
 
-  const storeEmail = (val) => localStorage.setItem("email", val);
   return (
     <div className="flex flex-col items-center justify-center gap-4 text-2xl min-w-96 mx-auto">
       <AuthHeader />
@@ -35,20 +34,19 @@ function Auth() {
 
       <Form
         action={async (formData) => {
-          const resp = isNewUser
-            ? await createUser(formData)
-            : await loginUser(formData);
           if (isNewUser) {
+            const resp = await createUser(formData);
             return resp.success;
-          } else {
-            Cookies.set("jwt", resp.accessToken, {
-              expires: 7,
-              secure: true,
-            });
-            localStorage.setItem("jwt", resp.accessToken);
-            storeEmail(resp.email);
-            router.push("/");
           }
+          const resp = await loginUser(formData);
+          const { accessToken, email } = resp;
+          Cookies.set("jwt", accessToken, {
+            secure: true,
+            expires: 1,
+            sameSite: true,
+          });
+          localStorage.setItem("email", email);
+          router.push("/");
         }}
       >
         <p className="text-center mb-6 text-3xl">Wconnect</p>
@@ -110,8 +108,8 @@ function Auth() {
       {errMsg && <p className="error">{errMsg}</p>}
     </div>
   );
-}
-export default Auth;
+};
+export default Autheticate;
 
 // "use client";
 // import React, { useState } from "react";
@@ -256,3 +254,10 @@ export default Auth;
 //   );
 // }
 // export default Auth;
+
+// Cookies.set("jwt", resp.accessToken, {
+//   expires: 7,
+//   httpOnly: true,
+//   secure: true,
+// });
+// localStorage.setItem("jwt", resp.accessToken);
