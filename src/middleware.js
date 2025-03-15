@@ -14,8 +14,7 @@ export async function middleware(req, res) {
   //  await jwtMiddleware(req);
 
   const origin = req.headers.get("origin");
-  console.log("origin ********:", origin);
-  console.log("origin ********:", req.headers);
+
   if (origin && allowedOrigins.indexOf(origin) === -1) {
     //!origin blocks thunder client or postman
     return new NextResponse(null, {
@@ -26,16 +25,6 @@ export async function middleware(req, res) {
       },
     });
   }
-
-  //   res.headers.append('Access-Control-Allow-Origin', origin);
-
-  // // add the remaining CORS headers to the response
-  // res.headers.append('Access-Control-Allow-Credentials', "true");
-  // res.headers.append('Access-Control-Allow-Methods', 'GET,DELETE,PATCH,POST,PUT');
-  // res.headers.append(
-  //     'Access-Control-Allow-Headers',
-  //     'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
-  // );
 
   const authHeader =
     req.headers.get("Authorization")?.split(" ") ||

@@ -1,10 +1,23 @@
 import { Sequelize } from "sequelize";
-
-export const sequelize = new Sequelize("nextdb", "root", "Alenoghena@2", {
-  host: "localhost",
-  dialect: "mysql",
-  dialectModule: require("mysql2"),
-});
+let sequelize;
+if (process.env.NODE_ENV === "development") {
+  sequelize = new Sequelize("nextdb", "root", "Alenoghena@2", {
+    host: "localhost",
+    dialect: "mysql",
+    dialectModule: require("mysql2"),
+  });
+} else {
+  sequelize = new Sequelize(
+    process.env.DB_PROD_NAME,
+    process.env.DB_PROD_USERNAME,
+    process.env.DB_PROD_PASSWORD,
+    {
+      host: process.env.DB_PROD_HOST,
+      dialect: "mysql",
+      dialectModule: require("mysql2"),
+    }
+  );
+}
 
 (async () => {
   try {
@@ -19,3 +32,5 @@ export const sequelize = new Sequelize("nextdb", "root", "Alenoghena@2", {
     console.log("Unable to connect to database", err);
   }
 })();
+
+export { sequelize };
