@@ -39,7 +39,8 @@ const Autheticate = () => {
             return resp.success;
           }
           const resp = await loginUser(formData);
-          const { accessToken, email } = resp;
+          const accessToken = resp?.accessToken;
+          const email = resp?.email;
           Cookies.set("jwt", accessToken, {
             secure: true,
             expires: 1,
