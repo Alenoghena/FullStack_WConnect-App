@@ -5,7 +5,11 @@ import nextConfig from "../next.config.mjs";
 
 const allowedOrigins =
   process.env.NODE_ENV === "production"
-    ? ["https://full-stack-w-connect-app.vercel.app/", "https://yoursite.com"]
+    ? [
+        "https://full-stack-w-connect-app.vercel.app/",
+        "https://yoursite.com",
+        "http://localhost:3000",
+      ]
     : ["http://localhost:3000", "http://localhost:3001"];
 
 const { secret } = nextConfig.serverRuntimeConfig;

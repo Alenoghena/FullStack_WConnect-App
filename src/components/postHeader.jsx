@@ -1,7 +1,9 @@
 import React from "react";
 import { MdPersonOutline } from "react-icons/md";
 
-const API_PHOTO_URLHeader = "http://localhost:3000/images/";
+const API_PHOTO_URLHeader =
+  "https://full-stack-w-connect-app.vercel.app/images/";
+// const API_PHOTO_URLHeader = "http://localhost:3000/images/";
 function PostHeader({
   handleHomeNav,
   handleCreateComment,
