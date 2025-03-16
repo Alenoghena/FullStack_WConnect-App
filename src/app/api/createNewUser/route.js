@@ -38,7 +38,7 @@ export async function POST(req) {
 
     // return res.status(201).json(newUser);
     return NextResponse.json({
-      success: `new user ${newUser.username} created successfully!`,
+      success: `new user ${createUser.username} created successfully!`,
       status: 201,
     });
   } catch (err) {

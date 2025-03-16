@@ -36,7 +36,7 @@ const Autheticate = () => {
         action={async (formData) => {
           if (isNewUser) {
             const resp = await createUser(formData);
-            return resp.success;
+            return resp?.success;
           }
           const resp = await loginUser(formData);
           const accessToken = resp?.accessToken;
