@@ -24,8 +24,7 @@ export default function Home() {
   const [showFile, setShowFile] = useState(false);
   const [image, setImage] = useState("img__header");
   const [auth, setAuth] = useState(Cookies.get("jwt"));
-  // console.log(auth);
-  // console.log(getCookie("jwt"));
+
   const router = useRouter();
 
   const handleShowFile = () => {
@@ -67,7 +66,6 @@ export default function Home() {
     setIsShowHome(false);
     setIsShowComment(true);
     router.push(`/post/${id}`);
-    // router.push("/post");
   }
 
   function handleHomeNav() {
@@ -123,7 +121,6 @@ export default function Home() {
       }
     } catch (err) {
       const message = `User handleUsers-Unauthorized! ${err.message}`;
-      // setErrMsgUser(message);
     }
   }, [setUser, auth]);
 

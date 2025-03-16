@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import { comparingPwd } from "@/lib/pwd";
 import Cookies from "js-cookie";
 import { cookies } from "next/headers";
-import { setCookie } from "cookies-next/server";
+// import { setCookie } from "cookies-next/server";
 import { NextResponse } from "next/server";
 import nextConfig from "../../../../../next.config.mjs";
 
@@ -64,11 +64,10 @@ export async function POST(req) {
     //Saving refreshToken for currentUser
     foundUser.refreshToken = refreshToken.split(".")[0];
     await foundUser.save();
-    console.log("refreshToken......", refreshToken.split(".")[0]);
 
     //send cookie as response
     Cookies.set("jwt", refreshToken, {
-      // httpOnly: true,
+      httpOnly: true,
       sameSite: true,
       secure: true,
       maxAge: 60 * 60 * 1000,

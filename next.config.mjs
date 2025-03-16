@@ -48,8 +48,7 @@ const nextConfig = {
           { key: "Access-Control-Allow-Credentials", value: "true" },
           {
             key: "Access-Control-Allow-Origin",
-            value:
-              "http://localhost:3000, http://localhost:3001, http://localhost:3002 ",
+            value: `http://localhost:3000, http://localhost:3001, http://localhost:3002, ${process.env.SERVER_URL}/api`,
           }, // replace this your actual origin
           {
             key: "Access-Control-Allow-Methods",

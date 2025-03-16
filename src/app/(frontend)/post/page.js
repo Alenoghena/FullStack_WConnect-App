@@ -9,7 +9,8 @@ import { usersReq, postsReq, photoReq } from "@/lib/reqAPI/apiRequests";
 import { logoutReq } from "@/lib/reqAPI/logout";
 import ProfilePicture from "../profilePicture/page";
 
-const API_PHOTO_URL = "http://localhost:3000/images/";
+const API_PHOTO_URL = "https://full-stack-w-connect-app.vercel.app/images/";
+// const API_PHOTO_URL = "http://localhost:3000/images/";
 
 const HomePage = ({
   isShowCreatePost,

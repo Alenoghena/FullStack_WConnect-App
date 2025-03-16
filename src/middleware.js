@@ -5,14 +5,12 @@ import nextConfig from "../next.config.mjs";
 
 const allowedOrigins =
   process.env.NODE_ENV === "production"
-    ? ["https://www.yoursite.com", "https://yoursite.com"]
+    ? ["https://full-stack-w-connect-app.vercel.app/", "https://yoursite.com"]
     : ["http://localhost:3000", "http://localhost:3001"];
 
 const { secret } = nextConfig.serverRuntimeConfig;
 
 export async function middleware(req, res) {
-  //  await jwtMiddleware(req);
-
   const origin = req.headers.get("origin");
 
   if (origin && allowedOrigins.indexOf(origin) === -1) {
@@ -66,29 +64,3 @@ export async function middleware(req, res) {
 export const config = {
   matcher: "/api/controller/:path*",
 };
-
-/////Keep temporary
-
-// const middleware = expressjwt({
-//   secret,
-//   algorithms: ["HS256"],
-//   //just added=>watch out for this session always
-//   credentialsRequired: false,
-//   getToken: function fromHeaderOrQuerystring(req) {
-//     if (
-//       req.headers.authorization &&
-//       req.headers.authorization.split(" ")[0] === "Bearer"
-//     ) {
-//       return req.headers.authorization.split(" ")[1];
-//     } else if (req.query && req.query.token) {
-//       return req.query.token;
-//     }
-//     return null;
-//   },
-// }).unless({
-//   path: [
-//     // public routes that don't require authentication
-//     "/api/createNewUser",
-//     // "/api/auth",
-//   ],
-// });

@@ -19,7 +19,8 @@ import {
 import { deletePostReq, deleteCommentReq } from "@/lib/reqAPI/delete";
 import ProfilePicture from "@/app/(frontend)/profilePicture/page";
 
-const API_PHOTO_URL = "http://localhost:3000/images/";
+const API_PHOTO_URL = "https://full-stack-w-connect-app.vercel.app/images/";
+// const API_PHOTO_URL = "http://localhost:3000/images/";
 
 const PostPage = ({ userPhotoLink }) => {
   const [errMsg, setErrMsg] = useState("");
