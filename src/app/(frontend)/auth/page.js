@@ -44,8 +44,8 @@ const Autheticate = () => {
           Cookies.set("jwt", accessToken, {
             secure: true,
             expires: 1,
-            // httpOnly: true,
-            sameSite: true,
+            httpOnly: true,
+            sameSite: "None",
           });
           localStorage.setItem("email", email);
           router.push("/");

@@ -1,6 +1,6 @@
 import { client } from "@/lib/(client)/index";
 
-const API_BASE_URL = "https://full-stack-w-connect-app.vercel.app/api/";
+const API_BASE_URL = "https://full-stack-w-connect-app.vercel.app/api";
 // const API_BASE_URL = "http://localhost:3000/api/";
 ////Logout
 export const logOutUser = async (path, options) => {

@@ -68,14 +68,14 @@ export async function POST(req) {
     //send cookie as response
     Cookies.set("jwt", refreshToken, {
       httpOnly: true,
-      sameSite: true,
+      sameSite: "None",
       secure: true,
       maxAge: 60 * 60 * 1000,
     }); //{httpOnly: true, maxAge: 24 * 60 * 60 * 1000,sameSite:"None", secure:true}. secure:true for https only
 
     cookieStore.set("jwt", refreshToken, {
-      // httpOnly: true,
-      sameSite: true,
+      httpOnly: true,
+      sameSite: "none",
       secure: true,
       maxAge: 60 * 60 * 1000,
       path: "",
