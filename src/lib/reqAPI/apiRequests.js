@@ -71,7 +71,7 @@ export const photoReq = async (id) => {
 
     const resp = await getData("/controller/photo/getPhoto", options);
 
-    return resp?.profilePhoto;
+    return resp;
   } catch (err) {
     const message = `Post profile picture-Unauthorized! ${err.message}`;
   }

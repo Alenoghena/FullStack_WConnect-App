@@ -6,38 +6,18 @@ import HomePage from "./(frontend)/post/page";
 import { photoReq, photosReq, usersReq } from "@/lib/reqAPI/apiRequests";
 import Autheticate from "./(frontend)/auth/page";
 import Cookies from "js-cookie";
-// import { deleteCookie, getCookie } from "cookies-next/client";
+
 import Link from "next/link.js";
 
 export default function Home() {
   const [user, setUser] = useState({});
-  const [postUserId, setpostUserId] = useState(0);
   const [show, setShow] = useState(false);
   const [isShowCreatePost, setIsshowCreatePost] = useState(false);
-  const [isShowCreateComment, setIsshowCreateComment] = useState(false);
-  const [isShowHome, setIsShowHome] = useState(false);
-  const [isShowComment, setIsShowComment] = useState(false);
   const [isShowDelete, setIsShowDelete] = useState(false);
-
-  const [userPhoto, setUserPhoto] = useState({});
   const [userPhotos, setUserPhotos] = useState([]);
-  const [showFile, setShowFile] = useState(false);
-  const [image, setImage] = useState("img__header");
   const [auth, setAuth] = useState(Cookies.get("jwt"));
 
   const router = useRouter();
-
-  const handleShowFile = () => {
-    const imageSize =
-      image === "img__header-size" ? "img__header" : "img__header-size";
-    if (showFile === false && image === "img__header") {
-      setShowFile(!showFile);
-      setImage(imageSize);
-    } else {
-      setShowFile(!showFile);
-      setImage(imageSize);
-    }
-  };
 
   function userPhotoLink(id) {
     const userPhoto = userPhotos?.map((val) => {
@@ -52,42 +32,17 @@ export default function Home() {
   }
 
   const handleCreatePost = () => {
-    setIsshowCreateComment(false);
+    // setIsshowCreateComment(false);
     setIsshowCreatePost(!isShowCreatePost);
   };
 
-  const handleCreateComment = () => {
-    setIsshowCreateComment(!isShowCreateComment);
-    setIsshowCreatePost(false);
-  };
-
-  function handleCommentsNav(id, postUserId) {
-    setpostUserId(postUserId);
-    setIsShowHome(false);
-    setIsShowComment(true);
-    router.push(`/post/${id}`);
-  }
-
   function handleHomeNav() {
-    setIsShowHome(true);
-    setIsShowComment(false);
     router.push("/");
   }
 
   const handleShowTrash = () => {
     if (isShowDelete === true) {
       setIsShowDelete(false);
-    }
-  };
-
-  const handleGetPhoto = async (id) => {
-    try {
-      const resp = await photoReq(id);
-
-      localStorage.setItem("photo", resp);
-      setUserPhoto(resp);
-    } catch (err) {
-      const message = `Post profile picture-Unauthorized! ${err.message}`;
     }
   };
 
@@ -104,7 +59,7 @@ export default function Home() {
 
   useEffect(() => {
     if (show) {
-      handleGetPhoto(user?.id);
+      // handleGetPhoto(user?.id);
 
       handleGetPhotos();
     }
@@ -124,9 +79,6 @@ export default function Home() {
     }
   }, [setUser, auth]);
 
-  useEffect(() => {
-    setIsShowHome(true);
-  }, []);
   useEffect(() => {
     if (handleUsers) {
       handleUsers();
@@ -154,20 +106,11 @@ export default function Home() {
             <div className="main">
               <div className="routes">
                 <HomePage
-                  isShowHome={isShowHome}
-                  postUserId={postUserId}
-                  image={image}
-                  isShowComment={isShowComment}
+                  handleGetPhotos={handleGetPhotos}
                   handleCreatePost={handleCreatePost}
-                  handleCreateComment={handleCreateComment}
-                  handleShowFile={handleShowFile}
                   handleHomeNav={handleHomeNav}
-                  show={show}
                   isShowCreatePost={isShowCreatePost}
-                  handleCommentsNav={handleCommentsNav}
                   userPhotoLink={userPhotoLink}
-                  userPhoto={userPhoto}
-                  isShowCreateComment={isShowCreateComment}
                 />
               </div>
             </div>

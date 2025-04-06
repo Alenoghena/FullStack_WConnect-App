@@ -2,6 +2,9 @@
 
 const nextConfig = {
   reactStrictMode: false,
+  images: {
+    domains: ["https://res.cloudinary.com"],
+  },
   // reactStrictMode: true,
   serverRuntimeConfig: {
     development: {

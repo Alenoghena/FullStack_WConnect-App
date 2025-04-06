@@ -11,22 +11,17 @@ import ProfilePicture from "../profilePicture/page";
 
 // const API_PHOTO_URL = "https://full-stack-w-connect-app.vercel.app/images/";
 const API_PHOTO_URL = "http://localhost:3000/images/";
-
+// const API_PHOTO_URL = "https://res.cloudinary.com/di3pz1oyv/image/upload/";
+//uploadpreset => wconnectstore
 const HomePage = ({
   isShowCreatePost,
   userPhotoLink,
-  image,
   handleCreatePost,
-  handleCreateComment,
   handleHomeNav,
-  handleDelete,
-  show,
-  deletepath,
-  isShowDelete,
+  handleGetPhotos,
 }) => {
   const [posts, setPosts] = useState([]);
   const [errMsg, setErrMsg] = useState("");
-  const [postUserId, setpostUserId] = useState(0);
   const [user, setUser] = useState({});
   const [showPhoto, setShowPhoto] = useState(false);
   const [pix, setPix] = useState(null);
@@ -49,14 +44,13 @@ const HomePage = ({
     setShowPhoto(isShowPix);
   };
 
-  function handleCommentsNav(id, postUserId) {
-    setpostUserId(postUserId);
+  function handleCommentsNav(id) {
     router.push(`/post/${id}`);
   }
   function handleNewsFeedNav() {
     router.push("/newsFeed");
   }
-  function handlePoliticsNav(id, postUserId) {
+  function handlePoliticsNav(id) {
     router.push("/politics");
   }
 
@@ -85,6 +79,7 @@ const HomePage = ({
     try {
       const resp = await photoReq(userId);
       setPix(resp);
+      console.log("resp", resp);
     } catch (err) {
       const message = `Post profile picture-Unauthorized! ${err.message}`;
     }
@@ -102,6 +97,10 @@ const HomePage = ({
     if (handlePosts) {
       handlePosts();
     }
+    if (pix) {
+      console.log("picture..", pix);
+      handleGetPhotos();
+    }
   }, [handlePosts, user]);
 
   return (
@@ -111,17 +110,9 @@ const HomePage = ({
         handleNewsFeedNav={handleNewsFeedNav}
         handlePoliticsNav={handlePoliticsNav}
         handleCreatePost={handleCreatePost}
-        handleCreateComment={handleCreateComment}
-        handleDelete={handleDelete}
         handleLogout={handleLogout}
         handleShowFile={handleShowPhoto}
-        isShowDelete={isShowDelete}
         userPhoto={pix}
-        userPhotoLink={userPhotoLink}
-        user={user}
-        deletepath={deletepath}
-        postUserId={postUserId}
-        image={image}
       />
       <div className="flex flex-col gap-8 items-start w-32 md:items-center">
         <div>
@@ -134,7 +125,7 @@ const HomePage = ({
                 key={post.id}
                 data-id={post.id}
                 className="mb-10"
-                onClick={() => handleCommentsNav(post.id, post.UserId)}
+                onClick={() => handleCommentsNav(post.id)}
               >
                 {errMsg && <p>{errMsg}</p>}
                 <div className="flex flex-col justify-center items-center">
@@ -147,7 +138,7 @@ const HomePage = ({
 
                     {userPhotoLink(post.userId) && (
                       <img
-                        src={`${API_PHOTO_URL}${userPhotoLink(post.userId)}`}
+                        src={`${userPhotoLink(post.userId)}`}
                         alt="UserPix"
                         style={{ width: 60, height: 60, borderRadius: 50 }}
                         className="img-user"

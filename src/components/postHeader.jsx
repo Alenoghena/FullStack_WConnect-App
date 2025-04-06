@@ -1,9 +1,11 @@
 import React from "react";
 import { MdPersonOutline } from "react-icons/md";
 
-const API_PHOTO_URLHeader =
-  "https://full-stack-w-connect-app.vercel.app/images/";
-// const API_PHOTO_URLHeader = "http://localhost:3000/images/";
+// const API_PHOTO_URLHeader =
+//   "https://full-stack-w-connect-app.vercel.app/images/";
+const API_PHOTO_URLHeader = "http://localhost:3000/images/";
+// const API_PHOTO_URLHeader =
+// "https://res.cloudinary.com/di3pz1oyv/image/upload/";
 function PostHeader({
   handleHomeNav,
   handleCreateComment,
@@ -12,6 +14,8 @@ function PostHeader({
   handleShowFile,
   showDelete,
   userPhoto,
+  postUserId,
+  user,
 }) {
   return (
     <header className="flex flex-col justify-between items-center gap-2 text-lg bg-slate-900 mx-auto px-4 py-1 w-screen md:flex-row sticky top-0 drop-shadow-xl z-10">
@@ -39,8 +43,12 @@ function PostHeader({
       <button type="button" className="header__btn">
         Chat
       </button>
-      {((showDelete.name === "post" && showDelete.show) ||
-        (showDelete.name === "comment" && showDelete.show)) && (
+      {((showDelete.name === "post" &&
+        showDelete.show &&
+        user.id === postUserId) ||
+        (showDelete.name === "comment" &&
+          showDelete.show &&
+          showDelete.username === user.username)) && (
         <button
           type="button"
           onClick={() => handleDelete()}
@@ -51,7 +59,7 @@ function PostHeader({
       )}
       {userPhoto && (
         <img
-          src={`${API_PHOTO_URLHeader}${userPhoto}`}
+          src={`${userPhoto.profilePhoto}`}
           alt="UserPix"
           width={50}
           height={50}

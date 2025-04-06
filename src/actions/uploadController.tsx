@@ -8,7 +8,7 @@ export async function registerProfile(
   userId: number,
   userPhoto: string
 ) {
-  const file = formData.get("file");
+  const file = formData.get("file") as File;
 
   if (file) {
     formData.append("file", file);
@@ -17,7 +17,6 @@ export async function registerProfile(
       const options = {
         headers: {
           authorization: `Bearer ${Cookies.get("jwt")}`,
-
           userId,
         },
       };

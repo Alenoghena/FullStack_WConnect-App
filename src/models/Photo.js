@@ -17,16 +17,6 @@ const Photo = sequelize.define(
   { tableName: "photos" }
 );
 
-// User.hasOne(Photo, {
-//   onDelete: "cascade",
-// });
-// Photo.belongsTo(User, { targetKey: "id" });
-
 Photo.sync({ alter: true });
 
 export default Photo;
-
-// userId: {
-//   type: DataTypes.INTEGER,
-//   FOREIGNKEYS: "FOREIGNKEYS",
-// },

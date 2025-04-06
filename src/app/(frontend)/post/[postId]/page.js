@@ -22,7 +22,7 @@ import ProfilePicture from "@/app/(frontend)/profilePicture/page";
 // const API_PHOTO_URL = "https://full-stack-w-connect-app.vercel.app/images/";
 const API_PHOTO_URL = "http://localhost:3000/images/";
 
-const PostPage = ({ userPhotoLink }) => {
+const PostPage = () => {
   const [errMsg, setErrMsg] = useState("");
   const [comments, setComments] = useState([]);
   const [likePost, setLikePost] = useState([]);
@@ -32,7 +32,6 @@ const PostPage = ({ userPhotoLink }) => {
   const [user, setUser] = useState({});
   const [pix, setPix] = useState(null);
   const [postPix, setPostPix] = useState(null);
-  const [postUserId, setpostUserId] = useState(0);
   const [isShowCreatePost, setIsshowCreatePost] = useState(false);
   const [isShowCreateComment, setIsshowCreateComment] = useState(false);
   const [showPhoto, setShowPhoto] = useState(false);
@@ -40,6 +39,7 @@ const PostPage = ({ userPhotoLink }) => {
     id: null,
     name: "",
     show: false,
+    username: "",
   });
   const [deleteMsg, setDeleteMsg] = useState("");
 
@@ -48,6 +48,8 @@ const PostPage = ({ userPhotoLink }) => {
   const title = post?.title;
 
   const { postId } = useParams();
+
+  console.log("postId???", post.userId, user.id, showDelete.username);
   const router = useRouter();
 
   const handleLogout = async () => {
@@ -245,11 +247,9 @@ const PostPage = ({ userPhotoLink }) => {
         handleLogout={handleLogout}
         handleShowFile={handleShowPhoto}
         showDelete={showDelete}
-        isShowCreatePost={isShowCreatePost}
         userPhoto={pix}
-        userPhotoLink={userPhotoLink}
+        postUserId={post.userId}
         user={user}
-        postUserId={postUserId}
       />
       {errMsg && <p>{errMsg}</p>}
 
@@ -263,7 +263,7 @@ const PostPage = ({ userPhotoLink }) => {
             )}
             {postPix && (
               <img
-                src={`${API_PHOTO_URL}${postPix}`}
+                src={`${postPix.profilePhoto}`}
                 alt="UserPix"
                 style={{ width: 60, height: 60, borderRadius: 50 }}
                 className="img-user"
@@ -297,8 +297,8 @@ const PostPage = ({ userPhotoLink }) => {
       <h1>Comment Section</h1>
 
       {comments.map((comment) => {
-        const commentId = comment.id;
-
+        const commentId = comment?.id;
+        const username = comment?.username;
         return (
           <div
             key={comment.id}
@@ -309,6 +309,7 @@ const PostPage = ({ userPhotoLink }) => {
                 id: commentId,
                 name: "comment",
                 show: !showDelete.show,
+                username,
               })
             }
           >

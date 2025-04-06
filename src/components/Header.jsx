@@ -1,21 +1,18 @@
 import React from "react";
 import { MdPersonOutline } from "react-icons/md";
-import Image from "next/image";
-const API_PHOTO_URLHeader =
-  "https://full-stack-w-connect-app.vercel.app/images/";
-// const API_PHOTO_URLHeader = "http://localhost:3000/images/";
+// import Image from "next/image";
+// const API_PHOTO_URLHeader =
+//   "https://full-stack-w-connect-app.vercel.app/images/";
+const API_PHOTO_URLHeader = "http://localhost:3000/images/";
+// const API_PHOTO_URLHeader =
+// "https://res.cloudinary.com/di3pz1oyv/image/upload/";
 function Header({
   handleHomeNav,
   handleNewsFeedNav,
   handlePoliticsNav,
   handleCreatePost,
-  handleDelete,
   handleLogout,
   handleShowFile,
-  isShowDelete,
-  user,
-  postUserId,
-  deletepath,
   userPhoto,
 }) {
   return (
@@ -23,44 +20,43 @@ function Header({
       <button className="p-4 mx-2" onClick={handleHomeNav}>
         Home
       </button>
-      {/* {isShowHome && (
-        <button
-          type="button"
-          onClick={handleCreatePost}
-          className="header__btn"
-        >
-          Create A Post
-        </button>
-      )} */}
-      <button type="button" onClick={handleCreatePost} className="header__btn">
+
+      <button
+        type="button"
+        onClick={handleCreatePost}
+        className="cursor-pointer header__btn"
+      >
         Create A Post
       </button>
 
-      <button type="button" onClick={handleLogout} className="header__btn">
+      <button
+        type="button"
+        onClick={handleLogout}
+        className="cursor-pointer header__btn"
+      >
         Logout
       </button>
-      <button type="button" className="header__btn" onClick={handleNewsFeedNav}>
+      <button
+        type="button"
+        className="cursor-pointer header__btn"
+        onClick={handleNewsFeedNav}
+      >
         NewsFeed
       </button>
-      <button type="button" className="header__btn" onClick={handlePoliticsNav}>
+      <button
+        type="button"
+        className="cursor-pointer header__btn"
+        onClick={handlePoliticsNav}
+      >
         Politics
       </button>
-      <button type="button" className="header__btn">
+      <button type="button" className="cursor-pointer header__btn">
         Chat
       </button>
-      {((isShowDelete && user.username === deletepath.name) ||
-        (isShowDelete && postUserId === deletepath.UserId)) && (
-        <button
-          type="button"
-          onClick={() => handleDelete(deletepath)}
-          className="header__btn overlay"
-        >
-          Delete Item
-        </button>
-      )}
+
       {userPhoto && (
         <img
-          src={`${API_PHOTO_URLHeader}${userPhoto}`}
+          src={`${userPhoto.profilePhoto}`}
           alt="UserPix"
           width={50}
           height={50}

@@ -2,8 +2,8 @@ import axios from "axios";
 
 const cors = require("cors");
 
-const API_BASE_URL = "https://full-stack-w-connect-app.vercel.app/api";
-// const API_BASE_URL = "http://localhost:3000/api";
+// const API_BASE_URL = "https://full-stack-w-connect-app.vercel.app/api";
+const API_BASE_URL = "http://localhost:3000/api";
 
 //list of sites or server addresses allowed to share data with this app
 

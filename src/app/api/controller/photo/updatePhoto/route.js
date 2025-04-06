@@ -3,8 +3,8 @@ import { NextResponse } from "next/server";
 import { writeFile } from "fs/promises";
 import path from "path";
 import fs from "fs";
+import { cloudinary } from "../../../../../../cloudinaryConfig";
 
-// const path = require("path");
 const fsPromises = fs.promises;
 
 export async function PATCH(req) {
@@ -16,11 +16,20 @@ export async function PATCH(req) {
 
   const formData = await req.formData();
   const photo = formData.get("file");
-  // console.log("photo and userid .... /////////???", photo.name, userId);
+  // formData.append("upload_preset", `${process.env.CLOUDINARY_API_PRESET_NAME}`);
+
   if (!photo) {
     return NextResponse.json({ success: false });
   }
+  ///////////////////////////////////////////////////////
 
+  const mimeType = photo.type;
+  const encoding = "base64";
+  const base64Data = Buffer.from(await photo.arrayBuffer()).toString("base64");
+
+  // this will be used to upload the file
+  const fileUri = "data:" + mimeType + ";" + encoding + "," + base64Data;
+  //////////////////////////////////////////////////////////
   const buffer = Buffer.from(await photo.arrayBuffer());
   const filename = Date.now() + photo.name.replaceAll(" ", "_");
 
@@ -36,17 +45,39 @@ export async function PATCH(req) {
   });
 
   if (foundPhoto?.profilePhoto) {
-    //remove the file from public/images/name-the name stored in db
+    // remove the file from public/images/name-the name stored in db
+
+    // await cloudinary.uploader.destroy(`${foundPhoto.profilePhoto}`);
+
     fsPromises.rm(path.join("public", "images", foundPhoto.profilePhoto));
-    foundPhoto.profilePhoto = filename;
-    await foundPhoto.save();
+
     await writeFile(path.join("public", "images", filename), buffer);
+
+    const uploadObj = await cloudinary.uploader.upload(fileUri, {
+      overwrite: true,
+      use_filename: true,
+      unique_filename: true,
+      upload_preset: process.env.CLOUDINARY_API_PRESET_NAME,
+    });
+
+    const autoCropUrl = cloudinary.url(fileUri, {
+      crop: "auto",
+      width: "50",
+      height: "50",
+    });
+
+    console.log("autoCropUrl..///////");
+    console.log("autoCropUrl..", autoCropUrl, uploadObj);
+
+    foundPhoto.profilePhoto = uploadObj.secure_url;
+    await foundPhoto.save();
+
+    return new NextResponse(
+      JSON.stringify({
+        ...foundPhoto,
+        message: "Photo updated successfully",
+      }),
+      { status: 201 }
+    );
   }
-  return new NextResponse(
-    JSON.stringify({
-      message: "Photo updated successfully",
-      UserId: foundPhoto?.userId,
-    }),
-    { status: 201 }
-  );
 }

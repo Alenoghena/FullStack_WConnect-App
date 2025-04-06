@@ -1,13 +1,15 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import Form from "next/form";
 import { registerProfile } from "@/actions/uploadController";
+// import { fileURLToPath } from "url";
 
 const ProfilePicture = ({ userId, userPhoto, setUserPhoto }) => {
   return (
     <Form
       action={async (formData) => {
         const resp = await registerProfile(formData, userId, userPhoto);
+
         setUserPhoto(resp);
       }}
       className="w-20 fixed left-10 top-28"

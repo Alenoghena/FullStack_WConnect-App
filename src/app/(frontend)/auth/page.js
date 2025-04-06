@@ -34,21 +34,33 @@ const Autheticate = () => {
 
       <Form
         action={async (formData) => {
-          if (isNewUser) {
-            const resp = await createUser(formData);
-            return resp?.success;
+          try {
+            if (isNewUser) {
+              const resp = await createUser(formData);
+              console.log(resp);
+              resp?.success
+                ? setCreateStatus(resp?.success)
+                : setErrMsg("Error creating new user");
+            } else {
+              const resp = await loginUser(formData);
+
+              if (resp?.accessToken) {
+                const accessToken = resp?.accessToken;
+                const email = resp?.email;
+                Cookies.set("jwt", accessToken, {
+                  sameSite: true,
+                  // sameSite: "None",
+                  // httpOnly: true,
+                  secure: true,
+                  expires: 2,
+                });
+                localStorage.setItem("email", email);
+                router.push("/");
+              }
+            }
+          } catch (err) {
+            setErrMsg(err?.message);
           }
-          const resp = await loginUser(formData);
-          const accessToken = resp?.accessToken;
-          const email = resp?.email;
-          Cookies.set("jwt", accessToken, {
-            secure: true,
-            expires: 1,
-            httpOnly: true,
-            sameSite: "None",
-          });
-          localStorage.setItem("email", email);
-          router.push("/");
         }}
       >
         <p className="text-center mb-6 text-3xl">Wconnect</p>
