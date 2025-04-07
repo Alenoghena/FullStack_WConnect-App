@@ -82,6 +82,7 @@ const HomePage = ({
       console.log("resp", resp);
     } catch (err) {
       const message = `Post profile picture-Unauthorized! ${err.message}`;
+      setErrMsg(message);
     }
   };
 
@@ -90,16 +91,16 @@ const HomePage = ({
   }, [handleUsers]);
 
   useEffect(() => {
+    handleGetPhotos();
+  }, [pix]);
+
+  useEffect(() => {
     if (user) {
       userPix(user?.id);
     }
 
     if (handlePosts) {
       handlePosts();
-    }
-    if (pix) {
-      console.log("picture..", pix);
-      handleGetPhotos();
     }
   }, [handlePosts, user]);
 

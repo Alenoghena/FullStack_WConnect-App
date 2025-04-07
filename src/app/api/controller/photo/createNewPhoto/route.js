@@ -41,26 +41,42 @@ export async function POST(req) {
   const message = "Photo created successfully";
   await writeFile(path.join("public", "images", filename), buffer);
 
-  const uploadResp = await cloudinary.uploader.upload(fileUri, {
-    overwrite: true,
-    use_filename: true,
-    filename_override: photo.name,
-    upload_preset: process.env.CLOUDINARY_API_PRESET_NAME,
+  // const uploadResp = await cloudinary.uploader.upload(fileUri, {
+  //   overwrite: true,
+  //   use_filename: true,
+  //   filename_override: photo.name,
+  //   upload_preset: process.env.CLOUDINARY_API_PRESET_NAME,
+  // });
+
+  // const autoCropUrl = cloudinary.url(fileUri, {
+  //   crop: "auto",
+  //   width: "50",
+  //   height: "50",
+  // });
+
+  const result = await cloudinary.uploader.upload(fileUri);
+  const url = cloudinary.url(result.public_id, {
+    transformation: [
+      {
+        quality: "auto",
+        fetch_format: "auto",
+      },
+      {
+        width: "60",
+        height: "60",
+        crop: "fill",
+        gravity: "auto",
+      },
+    ],
   });
 
-  const autoCropUrl = cloudinary.url(fileUri, {
-    crop: "auto",
-    width: "50",
-    height: "50",
-  });
+  console.log("photo url.........", url);
 
   const userPhoto = await Photo.create({
     userId,
-    profilePhoto: autoCropUrl.secure_url,
+    profilePhoto: url,
+    public_id: result.public_id,
   });
-  console.log("autoCropUrl..");
-
-  console.log("autoCropUrl..", autoCropUrl, uploadResp);
 
   return new NextResponse(JSON.stringify({ ...userPhoto, message }), {
     status: 201,

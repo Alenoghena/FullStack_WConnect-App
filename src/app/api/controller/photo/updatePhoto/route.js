@@ -47,29 +47,46 @@ export async function PATCH(req) {
   if (foundPhoto?.profilePhoto) {
     // remove the file from public/images/name-the name stored in db
 
-    // await cloudinary.uploader.destroy(`${foundPhoto.profilePhoto}`);
+    await cloudinary.uploader.destroy(foundPhoto.public_id);
 
-    fsPromises.rm(path.join("public", "images", foundPhoto.profilePhoto));
+    // fsPromises.rm(path.join("public", "images", foundPhoto.profilePhoto));
 
-    await writeFile(path.join("public", "images", filename), buffer);
+    // await writeFile(path.join("public", "images", filename), buffer);
 
-    const uploadObj = await cloudinary.uploader.upload(fileUri, {
-      overwrite: true,
-      use_filename: true,
-      unique_filename: true,
-      upload_preset: process.env.CLOUDINARY_API_PRESET_NAME,
+    // const uploadObj = await cloudinary.uploader.upload(fileUri, {
+    //   overwrite: true,
+    //   use_filename: true,
+    //   unique_filename: true,
+    //   upload_preset: process.env.CLOUDINARY_API_PRESET_NAME,
+    // });
+
+    // const autoCropUrl = cloudinary.url(fileUri, {
+    //   crop: "auto",
+    //   width: "50",
+    //   height: "50",
+    // });
+
+    const result = await cloudinary.uploader.upload(fileUri);
+
+    const url = cloudinary.url(result.public_id, {
+      transformation: [
+        {
+          quality: "auto",
+          fetch_format: "auto",
+        },
+        {
+          width: "60",
+          height: "60",
+          crop: "fill",
+          gravity: "auto",
+        },
+      ],
     });
 
-    const autoCropUrl = cloudinary.url(fileUri, {
-      crop: "auto",
-      width: "50",
-      height: "50",
-    });
+    console.log("photo url.........", url);
 
-    console.log("autoCropUrl..///////");
-    console.log("autoCropUrl..", autoCropUrl, uploadObj);
-
-    foundPhoto.profilePhoto = uploadObj.secure_url;
+    foundPhoto.profilePhoto = url;
+    foundPhoto.public_id = result.public_id;
     await foundPhoto.save();
 
     return new NextResponse(

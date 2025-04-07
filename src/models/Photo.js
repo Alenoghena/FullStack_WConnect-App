@@ -9,6 +9,10 @@ const Photo = sequelize.define(
       type: DataTypes.STRING,
       allowNull: true,
     },
+    public_id: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
     userId: {
       type: DataTypes.INTEGER,
       FOREIGNKEYS: "FOREIGNKEYS",

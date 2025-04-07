@@ -30,3 +30,6 @@ export default function RootLayout({ children }) {
     </html>
   );
 }
+
+//Github account: FullStack_Wconnect-App
+//To https://github.com/Alenoghena/FullStack_WConnect-App.git
